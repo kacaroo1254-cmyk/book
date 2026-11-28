@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <jsp:include page="../include/title.jsp" />
+<jsp:include page="../include/member/member.jsp" />
 </head>
 <body>
 	
@@ -27,7 +29,7 @@
 				<br>
 				<input type="password" name="mem_pw" placeholder="비밀번호를 입력하세요." />
 				<br>
-				<input type="button" value="로그인" onclick="signinForm();" />
+				<input type="button" value="로그인" onclick="signinForm()" />
 				<input type="reset" value="초기화" />
 				
 			</form>

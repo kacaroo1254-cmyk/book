@@ -36,6 +36,11 @@ public class MemberDto {
 		this.mem_mail = mem_mail;
 		this.mem_phone = mem_phone;
 	}
+	
+	public MemberDto(String mem_id, String mem_pw) {
+		this.mem_id = mem_id;
+		this.mem_pw = mem_pw;
+	}
 
 
 	public int getMem_no() {

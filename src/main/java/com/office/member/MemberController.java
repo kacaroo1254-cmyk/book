@@ -6,6 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 
@@ -36,11 +38,51 @@ public class MemberController extends HttpServlet {
 			
 			break;
 			
-		case "signin_confirm.mem":
+		case "/signin_confirm.mem":
 			
 			memberService = new MemberService(new MemberDao());
-			String resultForSigninConfirm = memberService.signinConfirm(request, response);
+			String signinedId = memberService.signinConfirm(request, response);
+			
+			if (signinedId != null) {
+				
+				System.out.println("[MemberController] signin_success");
+				
+				HttpSession session = request.getSession();
+				session.setAttribute("signinedId", signinedId);
+				session.setMaxInactiveInterval(60*30);
+				
+			} 
+			
+			System.out.println("[MemberController] signin_fail");
+			nextPage = generateView("/signin_result");	
+			
+			break;
 		
+		case "/signup_form.mem":
+			
+			nextPage = generateView("/signup_form");
+			
+			break;
+		
+		case "/signup_confirm.mem":
+		
+			memberService = new MemberService(new MemberDao());
+			int signupResult = memberService.signupConfirm(request, response);
+			
+			if (signupResult > 0) {
+				System.out.println("[MemberController] signup_success");
+				
+			} else {
+				System.out.println("[MemberController] signup_fail");
+				
+			}
+			
+			request.setAttribute("signupResult", signupResult);
+			
+			nextPage = generateView("/signup_result");
+			
+			
+			break;
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(nextPage);
@@ -56,7 +98,7 @@ public class MemberController extends HttpServlet {
 	
 	
 	private String generateView(String viewName) {
-		return "views/member" + viewName + ".jsp";
+		return "/view/member" + viewName + ".jsp";
 	}
 
 }
